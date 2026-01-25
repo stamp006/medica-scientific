@@ -1,0 +1,35 @@
+{
+  "name": "medica-scientific-parser",
+  "version": "1.0.0",
+  "description": "Excel parser for Medica Scientific simulation data - converts simulation output to normalized JSON",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "parse": "node index.js",
+    "analyze": "node analyze.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "excel",
+    "parser",
+    "simulation",
+    "medica-scientific",
+    "data-ingestion"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^4.4.3",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.0"
+  }
+}

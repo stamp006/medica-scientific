@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Generated output
+output/*
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
