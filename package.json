@@ -8,6 +8,7 @@
     "start": "node index.js",
     "parse": "node index.js",
     "analyze": "node analyze.js",
+    "server": "node server.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -23,9 +24,12 @@
   "license": "ISC",
   "dependencies": {
     "chart.js": "^4.4.3",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
