@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Tabs from "../components/Tabs.jsx";
 import SummaryCard from "../components/SummaryCard.jsx";
 import ChartSection from "../components/ChartSection.jsx";
+import FinanceInventorySection from "../components/FinanceInventorySection.jsx";
 import { loadDashboardData } from "../utils/loadDashboardData.js";
 
 const tabOptions = [
@@ -50,10 +51,12 @@ export default function Dashboard() {
   return (
     <div className="page">
       <div className="page-glow" aria-hidden="true" />
+
+      {/* Main Page Header */}
       <header className="header reveal" style={{ animationDelay: "0.1s" }}>
         <div>
-          <p className="eyebrow">Bottleneck Analysis</p>
-          <h1>Bottleneck Analysis Dashboard</h1>
+          <p className="eyebrow">Medica Scientific Analytics</p>
+          <h1>Simulation Dashboard</h1>
         </div>
         <div className="meta">
           <div>
@@ -68,25 +71,45 @@ export default function Dashboard() {
       </header>
 
       <main className="content">
+        {/* Finance & Inventory Section - NEW SECTION AT TOP */}
         <div className="reveal" style={{ animationDelay: "0.2s" }}>
-          <Tabs items={tabOptions} activeKey={activeTab} onChange={setActiveTab} />
+          <FinanceInventorySection />
         </div>
 
-        {error && <p className="error-banner">{error}</p>}
+        {/* Visual Divider */}
+        <div className="dashboard-divider reveal" style={{ animationDelay: "0.3s" }}>
+          <span className="divider-line"></span>
+        </div>
 
-        <section className="reveal" style={{ animationDelay: "0.3s" }}>
-          <SummaryCard summary={activeTabData?.summary} />
-        </section>
-
-        <section className="reveal" style={{ animationDelay: "0.4s" }}>
+        {/* Bottleneck Analysis Section - EXISTING SECTION BELOW */}
+        <section id="bottleneck-analysis" className="dashboard-section reveal" style={{ animationDelay: "0.4s" }}>
           <div className="section-header">
             <div>
-              <h2>Scenario Metrics</h2>
-              <p>Compare flows over time. The highlighted line shows the bottleneck.</p>
+              <p className="eyebrow">Bottleneck Analysis</p>
+              <h2>Production Bottleneck Analysis</h2>
             </div>
-            <span className="badge">{tabOptions.find((tab) => tab.key === activeTab)?.label}</span>
           </div>
-          <ChartSection charts={activeTabData?.charts} />
+
+          <div className="reveal" style={{ animationDelay: "0.5s" }}>
+            <Tabs items={tabOptions} activeKey={activeTab} onChange={setActiveTab} />
+          </div>
+
+          {error && <p className="error-banner">{error}</p>}
+
+          <section className="reveal" style={{ animationDelay: "0.6s" }}>
+            <SummaryCard summary={activeTabData?.summary} />
+          </section>
+
+          <section className="reveal" style={{ animationDelay: "0.7s" }}>
+            <div className="section-header">
+              <div>
+                <h3>Scenario Metrics</h3>
+                <p>Compare flows over time. The highlighted line shows the bottleneck.</p>
+              </div>
+              <span className="badge">{tabOptions.find((tab) => tab.key === activeTab)?.label}</span>
+            </div>
+            <ChartSection charts={activeTabData?.charts} />
+          </section>
         </section>
       </main>
     </div>

@@ -21,7 +21,7 @@ const mutedPalette = [
   "#4b6f82",
 ];
 
-export default function LineChart({ chartData, title }) {
+export default function LineChart({ chartData, title, subtitle }) {
   if (!chartData || !chartData.labels || !chartData.series) {
     return <p className="empty-state">No data available for {title}.</p>;
   }
@@ -79,7 +79,9 @@ export default function LineChart({ chartData, title }) {
     <div className="chart-card">
       <div className="chart-header">
         <h3>{title}</h3>
-        <p className="chart-subtitle">Highlighted line marks the primary bottleneck.</p>
+        <p className="chart-subtitle">
+          {subtitle || "Highlighted line marks the primary bottleneck."}
+        </p>
       </div>
       <div className="chart-body">
         <Line data={data} options={options} />
