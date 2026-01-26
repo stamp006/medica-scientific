@@ -43,7 +43,7 @@ Open the UI from the Vite dev server (usually `http://localhost:5173`). Uploadin
 1. Save it to `file/MBA68-BA650.xlsx`
 2. Clear previous output
 3. Run `npm run parse` and `npm run analyze`
-4. Return logs + the dashboard JSON path
+4. Return raw data and do analyze data for the dashboard JSON path
 
 ## Output Layout
 
