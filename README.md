@@ -35,10 +35,14 @@ npm install
 Run the backend server:
 
 ```bash
-npm run dev
+npm run dev:all
 ```
 
-Run the frontend (in a second terminal):
+Or run them separately:
+
+```bash
+npm run dev
+```
 
 ```bash
 npm run dev:frontend
@@ -65,6 +69,7 @@ Successful response:
 
 ## Scripts
 
+- `npm run dev:all`: Run backend + frontend together in watch mode
 - `npm run dev`: Start the backend in watch mode (auto-reload on `.ts` changes)
 - `npm run dev:frontend`: Start the Vite frontend dev server
 - `npm run build:backend`: Compile the backend TypeScript into `dist/`
@@ -76,8 +81,9 @@ Successful response:
 
 Recommended workflow:
 
-1. Backend: `npm run dev`
-2. Frontend: `npm run dev:frontend`
+1. All-in-one: `npm run dev:all`
+2. Or backend: `npm run dev`
+3. Or frontend: `npm run dev:frontend`
 
 ## Backend Architecture
 
