@@ -1,4 +1,4 @@
-# Medica Scientific - Upload → Parse → Analyze
+# Medica Scientific
 
 This project ingests Medica Scientific Excel simulation output, parses it into chunked JSON, analyzes bottlenecks, and serves a frontend dashboard.
 
