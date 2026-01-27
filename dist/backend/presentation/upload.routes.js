@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
 import path from "node:path";
+import crypto from "node:crypto";
 function buildMulter(fileRepository) {
     const { uploadDir } = fileRepository.getPaths();
     const storage = multer.diskStorage({
@@ -14,7 +15,11 @@ function buildMulter(fileRepository) {
             }
         },
         filename: (_req, file, cb) => {
-            cb(null, file.originalname);
+            // Store under a temporary name first; the UploadService will atomically
+            // replace the single source-of-truth filename.
+            const ext = path.extname(file.originalname) || ".xlsx";
+            const tempName = `upload-${Date.now()}-${crypto.randomUUID()}${ext}.uploading`;
+            cb(null, tempName);
         },
     });
     return multer({
