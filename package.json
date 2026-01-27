@@ -5,10 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "parse": "node parse.js",
-    "analyze": "node analyze.js",
-    "server": "node server.js",
+    "start": "node dist/backend/server.js",
+    "build:backend": "tsc -p tsconfig.backend.json",
+    "server": "npm run build:backend && node dist/backend/server.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -33,7 +32,11 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^25.0.10",
     "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.9.3",
     "vite": "^5.4.0"
   }
 }

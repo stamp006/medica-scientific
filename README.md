@@ -1,95 +1,137 @@
-# Medica Scientific - Production Analytics
+# Medica Scientific - Upload → Parse → Analyze
 
-Node.js data pipeline and React dashboard for Medica Scientific simulation output. The system ingests Excel exports, writes chunked JSON by day, and runs a bottleneck analysis that feeds a frontend-ready dashboard.
+This project ingests Medica Scientific Excel simulation output, parses it into chunked JSON, analyzes bottlenecks, and serves a frontend dashboard.
 
-## What This Project Does
+The backend pipeline has been refactored into **Clean Architecture** using **Node.js + TypeScript**. Uploads now execute the full pipeline via services and a single use case, with no shell execution and no legacy scripts.
 
-- Parse an Excel workbook of simulation results
-- Normalize and chunk metrics into day-based JSON files
-- Detect bottlenecks with confidence scoring
-- Serve a dashboard UI and an upload workflow
+## How It Works
+
+On every `POST /upload`:
+
+1. The uploaded `.xlsx` file is saved to `file/` using its original filename.
+2. All prior parsed/analyzed output is deleted.
+3. The Excel file is parsed into chunked JSON output.
+4. Bottleneck analysis runs against the parsed output.
+5. The API returns:
+
+```json
+{
+  "success": true,
+  "outputFile": "output/frontend/bottleneck_dashboard.json"
+}
+```
 
 ## Quick Start
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Run the pipeline from the CLI
-
-```bash
-npm run parse
-npm run analyze
-```
-
-The parser expects an Excel file at `file/MBA68-BA650.xlsx`.
-
-### Run the upload server + frontend
-
-In one terminal:
+Run the backend server:
 
 ```bash
 npm run server
 ```
 
-In another terminal:
+Run the frontend (in a second terminal):
 
 ```bash
 npm run dev
 ```
 
-Open the UI from the Vite dev server (usually `http://localhost:5173`). Uploading an `.xlsx` file will:
+The frontend typically runs at `http://localhost:5173` and the backend at `http://localhost:3001`.
 
-1. Save it to `file/MBA68-BA650.xlsx`
-2. Clear previous output
-3. Run `npm run parse` and `npm run analyze`
-4. Return raw data and do analyze data for the dashboard JSON path
+## API
 
-## Output Layout
+### `POST /upload`
 
-After parsing, output is written under `output/`:
+- Content type: `multipart/form-data`
+- Field name: `file`
+- Supported file type: `.xlsx`
 
-```
-output/
-├── meta.json
-├── history/
-│   └── events.json
-├── standard/
-│   ├── day_000.json
-│   └── ...
-├── custom/
-│   ├── day_000.json
-│   └── ...
-├── inventory/
-├── financial/
-└── workforce/
-```
+Successful response:
 
-Bottleneck analysis writes a dashboard payload to:
-
-```
-output/frontend/bottleneck_dashboard.json
+```json
+{
+  "success": true,
+  "outputFile": "output/frontend/bottleneck_dashboard.json"
+}
 ```
 
 ## Scripts
 
-- `npm run parse`: Parse the Excel file into chunked JSON
-- `npm run analyze`: Generate bottleneck dashboard output
-- `npm run server`: Start the upload server on port 3001
-- `npm run dev`: Start the Vite frontend
+- `npm run build:backend`: Compile the backend TypeScript into `dist/`
+- `npm run server`: Build the backend and start the server on port `3001`
+- `npm start`: Start the compiled backend from `dist/backend/server.js`
+- `npm run dev`: Start the Vite frontend dev server
 - `npm run build`: Build the frontend
 - `npm run preview`: Preview the built frontend
 
-## Project Structure
+## Backend Architecture
 
-- `index.js`: CLI entry for parsing
-- `analyze.js`: CLI entry for bottleneck analysis
-- `server.js`: Upload server (Express + Multer)
-- `src/parser.js`: Excel parsing and normalization
-- `src/writer.js`: Chunked JSON writer
-- `src/analytics.js`: Bottleneck detection + dashboard payload
-- `src/pages`: React pages for upload and dashboard
-- `src/components`: Reusable UI pieces
+The backend follows Clean Architecture boundaries:
+
+```text
+backend/
+  presentation/
+    upload.controller.ts
+    upload.routes.ts
+  application/
+    uploadAndAnalyze.usecase.ts
+  domain/
+    services/
+      IUploadService.ts
+      IParseService.ts
+      IAnalyzeService.ts
+  infrastructure/
+    services/
+      upload.service.ts
+      parse.service.ts
+      analyze.service.ts
+    filesystem/
+      fileRepository.ts
+      outputRepository.ts
+  server.ts
+```
+
+Key rules:
+
+- The **use case** (`uploadAndAnalyze.usecase.ts`) is the only orchestrator.
+- The controller contains no business logic.
+- All previous output is deleted before parsing.
+- No `child_process` usage and no shell command execution.
+
+## Output Layout
+
+Pipeline output is written under `output/`:
+
+```text
+output/
+  meta.json
+  history/events.json
+  standard/day_000.json
+  custom/day_000.json
+  inventory/day_000.json
+  financial/day_000.json
+  workforce/day_000.json
+  frontend/bottleneck_dashboard.json
+```
+
+The frontend consumes:
+
+- `output/frontend/bottleneck_dashboard.json`
+
+## Data + Analysis Modules
+
+Core parsing and analysis logic remains in:
+
+- `src/parser.js`
+- `src/writer.js`
+- `src/analytics.js`
+
+These are invoked by TypeScript infrastructure services.
 
 ## Notes
 
