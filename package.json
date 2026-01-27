@@ -8,8 +8,10 @@
     "start": "node dist/backend/server.js",
     "build:backend": "tsc -p tsconfig.backend.json",
     "server": "npm run build:backend && node dist/backend/server.js",
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "tsx watch backend/server.ts",
+    "dev:frontend": "vite",
+    "build": "npm run build:backend",
+    "build:frontend": "vite build",
     "preview": "vite preview"
   },
   "keywords": [
@@ -36,6 +38,10 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^25.0.10",
     "@vitejs/plugin-react": "^4.3.1",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^5.4.0"
   }

@@ -8,7 +8,10 @@ The backend pipeline has been refactored into **Clean Architecture** using **Nod
 
 On every `POST /upload`:
 
-1. The uploaded `.xlsx` file is saved to `file/` using its original filename.
+1. The uploaded `.xlsx` file is saved to a single fixed filename:
+   - `file/MBA68-BA650.xlsx`
+   - The original filename is ignored.
+   - Existing files are overwritten (last write wins).
 2. All prior parsed/analyzed output is deleted.
 3. The Excel file is parsed into chunked JSON output.
 4. Bottleneck analysis runs against the parsed output.
@@ -32,13 +35,13 @@ npm install
 Run the backend server:
 
 ```bash
-npm run server
+npm run dev
 ```
 
 Run the frontend (in a second terminal):
 
 ```bash
-npm run dev
+npm run dev:frontend
 ```
 
 The frontend typically runs at `http://localhost:5173` and the backend at `http://localhost:3001`.
@@ -62,12 +65,19 @@ Successful response:
 
 ## Scripts
 
+- `npm run dev`: Start the backend in watch mode (auto-reload on `.ts` changes)
+- `npm run dev:frontend`: Start the Vite frontend dev server
 - `npm run build:backend`: Compile the backend TypeScript into `dist/`
+- `npm run build`: Compile the backend (production build step)
 - `npm run server`: Build the backend and start the server on port `3001`
 - `npm start`: Start the compiled backend from `dist/backend/server.js`
-- `npm run dev`: Start the Vite frontend dev server
-- `npm run build`: Build the frontend
+- `npm run build:frontend`: Build the frontend
 - `npm run preview`: Preview the built frontend
+
+Recommended workflow:
+
+1. Backend: `npm run dev`
+2. Frontend: `npm run dev:frontend`
 
 ## Backend Architecture
 
